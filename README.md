@@ -1,0 +1,1 @@
+Just a project to manage my setup scripts for ubuntu. 

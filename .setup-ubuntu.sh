@@ -76,7 +76,7 @@ if [ "$install_additional" = "y" ] || [ "$install_additional" = "Y" ]; then
 fi
 
 # System cleanup
-run_module "cleanup.sh" "System Cleanup"
+run_module "./modules/cleanup.sh" "System Cleanup"
 
 print_status "Ubuntu System Setup completed successfully!"
 echo ""
