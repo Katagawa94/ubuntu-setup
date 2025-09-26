@@ -21,14 +21,33 @@ print_error() {
 
 set -e # Exit immediately if a command exits with a non-zero status
 
+# Function to check if NVM is installed
+is_nvm_installed() {
+    [ -s "$HOME/.nvm/nvm.sh" ]
+}
+
+# Function to check if Node.js is installed
+is_node_installed() {
+    command -v node >/dev/null 2>&1
+}
+
+# Function to check if pnpm is installed
+is_pnpm_installed() {
+    command -v pnpm >/dev/null 2>&1
+}
+
 # Node.js development environment
 echo "=================================================="
 echo "NODE.JS DEVELOPMENT ENVIRONMENT"
 echo "=================================================="
 
 # Install NVM (Node Version Manager)
-print_status "Installing NVM..."
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+if is_nvm_installed; then
+    print_status "NVM is already installed, skipping..."
+else
+    print_status "Installing NVM..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+fi
 
 # Source NVM to make it available immediately
 export NVM_DIR="$HOME/.nvm"
@@ -36,12 +55,20 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Install latest LTS Node.js using NVM
-print_status "Installing Node.js (LTS)..."
-nvm install --lts
-nvm use --lts
+if is_node_installed; then
+    print_status "Node.js is already installed, skipping..."
+else
+    print_status "Installing Node.js (LTS)..."
+    nvm install --lts
+    nvm use --lts
+fi
 
 # Install pnpm
-print_status "Installing pnpm..."
-npm install -g pnpm
+if is_pnpm_installed; then
+    print_status "pnpm is already installed, skipping..."
+else
+    print_status "Installing pnpm..."
+    npm install -g pnpm
+fi
 
 print_status "Node.js development environment completed!"
